@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    #box1 {
+        margin-top: 20px;
+    }
+    #box1>span {
+        display: inline-block;
+        background-color: #f60;
+        padding: 5px 10px;
+        color: #fff;
+        font-size: 16px;
+        margin-right: 10px;
+        cursor: pointer;
+        margin-bottom: 10px;
+    }
+    </style>
+</head>
+<body>
+    <div>
+        <input type="text" id="input_1">
+        <button class="btn_1">左侧入</button>
+        <button class="btn_1">右侧入</button>
+        <button class="btn_1">左侧出</button>
+        <button class="btn_1">右侧出</button>
+    </div>
+    <div id="box1"></div>
+
+<script>
+var input = document.getElementById('input_1');
+var aBtn= document.getElementsByClassName('btn_1');
+var box = document.getElementById('box1');
+var arrList = [];
+var aSpan;
+
+/*
+render
+插入列表
+*/ 
+function render(){
+    var html = '';
+    arrList.forEach(function(ele){
+        html += '<span>'+ ele + '</span>';
+    });
+    box.innerHTML = html;
+}
+
+/*
+listHandle
+响应列表点击
+*/
+function listHandle(){
+    aSpan = box.getElementsByTagName('span');
+    if(aSpan){
+        for( var i = 0; i<aSpan.length ; i++ ){
+            aSpan[i].index = i;
+            aSpan[i].onclick = function(){
+                arrList.splice(this.index, 1);
+                Render();
+            };
+    }
+    }
+}
+
+/*
+btnHandle
+响应四个按钮点击
+*/
+function btnHandle(){
+
+    for(var i = 0; i<aBtn.length; i++) {
+        aBtn[i].index = i;
+        aBtn[i].onclick = function(){
+            var text = input.value;
+            if( text && !isNaN(Number(text)) ) {
+                if(this.index === 0) {
+                    arrList.unshift(text);
+                }
+                if(this.index === 1) {
+                    arrList.push(text);
+                }
+            };
+            if(this.index === 2) {
+                alert(arrList.shift())
+            }
+            if(this.index === 3) {
+                alert(arrList.pop())
+            }
+            input.value = '';
+            Render();
+        }
+    }
+
+}
+
+
+function errorHandle(){
+    alert('输入有误');
+}
+
+
+/*
+渲染列表
+绑定列表点击事件
+*/ 
+function Render() {
+    render();
+    listHandle();
+}
+
+btnHandle();
+
+
+</script>
+
+</body>
+</html>
